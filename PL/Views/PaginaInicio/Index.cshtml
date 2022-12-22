@@ -5,7 +5,7 @@
 
 <h2>Index</h2>
 <div class="container">
-    <div class="row col-lg-3">
+    <div class="row col-lg-3" id="primerRow">
         HolaRow1
     </div>
     <div class="row col-lg-6">
@@ -16,3 +16,16 @@
     </div>
     <div class="row"></div>
 </div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function () {
+        var LlenarRow1 = function () {
+            $.get('http://localhost:13107/Producto/GetMostrar', {}, function (response) {
+                $.each(response.objects, function (indice) {
+                    $('#primerRow').append("<div class= 'card-deck col-lg-1' style='width: 150px;'>" + "<img class='card-img-top' src=" + + ">" + "<div class='card-body'>" + "<h5 class='card-title text-center'>" + "Otro" + "</h5>" + "</div></div>");
+                });
+            }           
+        };
+        LlenarRow1();
+    });
+</script>

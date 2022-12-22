@@ -7,11 +7,12 @@ using System.Web.Http;
 
 namespace SL.Controllers
 {
-    [Route("api/[controller]")]
+    
     public class ProductoController : ApiController
     {
         // GET: api/Producto
         [HttpGet]
+        [Route("Producto/GetMostrar")]
         public IHttpActionResult ProductoGetAllMostrar()
         {
             ML.Result result = BL.Producto.ProductoGetAllMostrar();
