@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ASantiagoEvalucacionTecnicaLumenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Marca">
+          <Key>
+            <PropertyRef Name="IdMarca" />
+          </Key>
+          <Property Name="IdMarca" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreMarca" Type="varchar" MaxLength="100" />
+          <Property Name="MarcaMostrarEnElHome" Type="bit" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="Sku" />
+          </Key>
+          <Property Name="Sku" Type="int" Nullable="false" />
+          <Property Name="NombreProducto" Type="varchar" MaxLength="250" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="IdMarca" Type="int" />
+          <Property Name="ProductoMostrarEnElHome" Type="bit" />
+        </EntityType>
+        <EntityType Name="Promocion">
+          <Key>
+            <PropertyRef Name="IdPromocion" />
+          </Key>
+          <Property Name="IdPromocion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombrePromocion" Type="varchar" MaxLength="150" />
+          <Property Name="FechaInicio" Type="datetime" />
+          <Property Name="FechaTermino" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Producto__IdMarc__1367E606">
+          <End Role="Marca" Type="Self.Marca" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marca">
+              <PropertyRef Name="IdMarca" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="IdMarca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ProductoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ProductoGetAllMostrar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ProductoGetByMarca" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMarca" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ProductoGetByNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreProducto" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PromocionGetAllActiva" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ASantiagoEvalucacionTecnicaLumenModelStoreContainer">
+          <EntitySet Name="Marca" EntityType="Self.Marca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promocion" EntityType="Self.Promocion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Producto__IdMarc__1367E606" Association="Self.FK__Producto__IdMarc__1367E606">
+            <End Role="Marca" EntitySet="Marca" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ASantiagoEvalucacionTecnicaLumenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Marca">
+          <Key>
+            <PropertyRef Name="IdMarca" />
+          </Key>
+          <Property Name="IdMarca" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreMarca" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MarcaMostrarEnElHome" Type="Boolean" />
+          <NavigationProperty Name="Productoes" Relationship="Self.FK__Producto__IdMarc__1367E606" FromRole="Marca" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="Sku" />
+          </Key>
+          <Property Name="Sku" Type="Int32" Nullable="false" />
+          <Property Name="NombreProducto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="IdMarca" Type="Int32" />
+          <Property Name="ProductoMostrarEnElHome" Type="Boolean" />
+          <NavigationProperty Name="Marca" Relationship="Self.FK__Producto__IdMarc__1367E606" FromRole="Producto" ToRole="Marca" />
+        </EntityType>
+        <EntityType Name="Promocion">
+          <Key>
+            <PropertyRef Name="IdPromocion" />
+          </Key>
+          <Property Name="IdPromocion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombrePromocion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="FechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="FechaTermino" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK__Producto__IdMarc__1367E606">
+          <End Role="Marca" Type="Self.Marca" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marca">
+              <PropertyRef Name="IdMarca" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="IdMarca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ASantiagoEvalucacionTecnicaLumenEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Marcas" EntityType="Self.Marca" />
+          <EntitySet Name="Productoes" EntityType="Self.Producto" />
+          <EntitySet Name="Promocions" EntityType="Self.Promocion" />
+          <AssociationSet Name="FK__Producto__IdMarc__1367E606" Association="Self.FK__Producto__IdMarc__1367E606">
+            <End Role="Marca" EntitySet="Marcas" />
+            <End Role="Producto" EntitySet="Productoes" />
+          </AssociationSet>
+          <FunctionImport Name="ProductoGetAll" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetAll_Result)" />
+          <FunctionImport Name="ProductoGetAllMostrar" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetAllMostrar_Result)" />
+          <FunctionImport Name="ProductoGetByMarca" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetByMarca_Result)">
+            <Parameter Name="IdMarca" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ProductoGetByNombre" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetByNombre_Result)">
+            <Parameter Name="NombreProducto" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PromocionGetAllActiva" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.PromocionGetAllActiva_Result)" />
+        </EntityContainer>
+        <ComplexType Name="ProductoGetAll_Result">
+          <Property Type="Int32" Name="Sku" Nullable="false" />
+          <Property Type="String" Name="NombreProducto" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="IdMarca" Nullable="false" />
+          <Property Type="String" Name="NombreMarca" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="ProductoMostrarEnElHome" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ProductoGetAllMostrar_Result">
+          <Property Type="Int32" Name="Sku" Nullable="false" />
+          <Property Type="String" Name="NombreProducto" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="IdMarca" Nullable="false" />
+          <Property Type="String" Name="NombreMarca" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="ProductoMostrarEnElHome" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ProductoGetByMarca_Result">
+          <Property Type="Int32" Name="Sku" Nullable="false" />
+          <Property Type="String" Name="NombreProducto" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="IdMarca" Nullable="false" />
+          <Property Type="String" Name="NombreMarca" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="ProductoMostrarEnElHome" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ProductoGetByNombre_Result">
+          <Property Type="Int32" Name="Sku" Nullable="false" />
+          <Property Type="String" Name="NombreProducto" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="IdMarca" Nullable="false" />
+          <Property Type="String" Name="NombreMarca" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="ProductoMostrarEnElHome" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="PromocionGetAllActiva_Result">
+          <Property Type="Int32" Name="IdPromocion" Nullable="false" />
+          <Property Type="String" Name="NombrePromocion" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FechaTermino" Nullable="true" Precision="23" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ASantiagoEvalucacionTecnicaLumenModelStoreContainer" CdmEntityContainer="ASantiagoEvalucacionTecnicaLumenEntities">
+          <EntitySetMapping Name="Marcas">
+            <EntityTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.Marca">
+              <MappingFragment StoreEntitySet="Marca">
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="NombreMarca" ColumnName="NombreMarca" />
+                <ScalarProperty Name="MarcaMostrarEnElHome" ColumnName="MarcaMostrarEnElHome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Productoes">
+            <EntityTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="Sku" ColumnName="Sku" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="ProductoMostrarEnElHome" ColumnName="ProductoMostrarEnElHome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promocions">
+            <EntityTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.Promocion">
+              <MappingFragment StoreEntitySet="Promocion">
+                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
+                <ScalarProperty Name="NombrePromocion" ColumnName="NombrePromocion" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaTermino" ColumnName="FechaTermino" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ProductoGetAll" FunctionName="ASantiagoEvalucacionTecnicaLumenModel.Store.ProductoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.ProductoGetAll_Result">
+                <ScalarProperty Name="Sku" ColumnName="Sku" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="NombreMarca" ColumnName="NombreMarca" />
+                <ScalarProperty Name="ProductoMostrarEnElHome" ColumnName="ProductoMostrarEnElHome" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProductoGetAllMostrar" FunctionName="ASantiagoEvalucacionTecnicaLumenModel.Store.ProductoGetAllMostrar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.ProductoGetAllMostrar_Result">
+                <ScalarProperty Name="Sku" ColumnName="Sku" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="NombreMarca" ColumnName="NombreMarca" />
+                <ScalarProperty Name="ProductoMostrarEnElHome" ColumnName="ProductoMostrarEnElHome" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProductoGetByMarca" FunctionName="ASantiagoEvalucacionTecnicaLumenModel.Store.ProductoGetByMarca">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.ProductoGetByMarca_Result">
+                <ScalarProperty Name="Sku" ColumnName="Sku" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="NombreMarca" ColumnName="NombreMarca" />
+                <ScalarProperty Name="ProductoMostrarEnElHome" ColumnName="ProductoMostrarEnElHome" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProductoGetByNombre" FunctionName="ASantiagoEvalucacionTecnicaLumenModel.Store.ProductoGetByNombre">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.ProductoGetByNombre_Result">
+                <ScalarProperty Name="Sku" ColumnName="Sku" />
+                <ScalarProperty Name="NombreProducto" ColumnName="NombreProducto" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="NombreMarca" ColumnName="NombreMarca" />
+                <ScalarProperty Name="ProductoMostrarEnElHome" ColumnName="ProductoMostrarEnElHome" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PromocionGetAllActiva" FunctionName="ASantiagoEvalucacionTecnicaLumenModel.Store.PromocionGetAllActiva">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.PromocionGetAllActiva_Result">
+                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
+                <ScalarProperty Name="NombrePromocion" ColumnName="NombrePromocion" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaTermino" ColumnName="FechaTermino" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
