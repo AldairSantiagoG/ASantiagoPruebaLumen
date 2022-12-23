@@ -68,6 +68,9 @@
     <Compile Include="Marca.cs">
       <DependentUpon>ASantiagoEvalucacionTecnicaLumen.tt</DependentUpon>
     </Compile>
+    <Compile Include="MarcaGetAll_Result.cs">
+      <DependentUpon>ASantiagoEvalucacionTecnicaLumen.tt</DependentUpon>
+    </Compile>
     <Compile Include="Producto.cs">
       <DependentUpon>ASantiagoEvalucacionTecnicaLumen.tt</DependentUpon>
     </Compile>

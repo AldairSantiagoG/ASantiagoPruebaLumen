@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "Pagina 2";
+}
+<style>
+    body {
+        background-color: white;
+    }
+    .card {
+        border: outset;
+        background-color: #eee;
+        border-radius: 10px;
+        margin-top: .5em;
+        margin-bottom: .5em;
+        margin-left: .5em;
+        margin-right: .5em;
+    }
+</style>
+
+
+<br />
+
+<div class="container" >
+
+    <div class="row">
+        <div class="col-lg-2">
+
+            <input type="text" id="txtNombre" class="form-control" />
+            <label id="lblNombre" class="hidden" >Busqueda minima de 3 caracteres</label>
+            <br /><button id="btnBusqueda" class="btn btn-success">Buscar</button>
+
+
+        </div>
+        <div class="col-lg-3">
+            <select id="selectMarca" class="form-control">
+            </select>
+        </div>
+        @*<div class="col-lg-2">
+
+            </div>*@
+    </div>
+    <div class="row" id="contenedorProducto">
+        @*<div class="col-lg-12" id="contenedorProducto">
+
+
+        </div>*@
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        /////////////////////////////
+
+        var LlenarMarca = function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:13107/Marca/GetAll',
+                dataType: 'json',
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    $("#selectMarca").append('<option value="0">' + 'Selecciona una marca' + '</option>');
+                    $.each(response.Objects, function (indice) {
+                        console.log(response.Objects[indice].NombreProducto);
+
+
+                        $("#selectMarca").append('<option value="'
+                            + response.Objects[indice].IdMarca + '">'
+                            + response.Objects[indice].NombreMarca + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
+        LlenarMarca();
+
+        $("#selectMarca").change(function () {
+            $("#contenedorProducto").empty("option");//vaciar
+            var valorMarca = $('#selectMarca').val();
+
+            if (valorMarca == 0) {
+                LlenarContenerdorProducto();
+            }
+            else {
+                //if ($('#slctSubMarca').val() != undefined || $('#slctSubMarca').val() == 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:13107/Producto/GetMarca/{id}',
+                    dataType: 'json',
+                    data: { id: $('#selectMarca').val() },
+                    success: function (response) {
+                        console.log(response);
+                        $.each(response.Objects, function (indice) {
+                            /*$("#contenedorProducto").append("<div class='card col-lg-2' style='width: 18rem; '>" + "<img class='card-img-top' src=" + +"alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");*/
+                            $('#contenedorProducto').append("<div class='card col-lg-1' style='width: 18rem;  height:22rem;'>" + "<img class='card-img-top' style='width: 100px; height:100px;' src=" + "'/Imagenes/" + response.Objects[indice].Sku + ".jpg'" + "alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            }
+
+
+
+        });
+
+
+
+        $('#btnBusqueda').click(function () {
+
+            let longitud = $("#txtNombre").val().length;
+
+            console.log(longitud);
+            if (longitud < 3) {
+                $("#lblNombre").removeClass("hidden");
+            } else {
+                $("#contenedorProducto").empty("option");//vaciar
+                console.log($('#txtNombre').val());
+                $("#lblNombre").addClass("hidden");
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:13107/Producto/GetNombre/',
+                    dataType: 'json',
+                    data: { nombreProducto: $('#txtNombre').val() },
+                    success: function (response) {
+                        console.log(response);
+                        $.each(response.Objects, function (indice) {
+                            console.log(response.Objects[indice].NombreProducto);
+                            /* $('#contenedorProducto').append("<div class='card col-lg-1'  style='width: 18rem;'>" + "<img class='card-img-top' src=" + +"alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");*/
+                            $('#contenedorProducto').append("<div class='card col-lg-1' style='width: 18rem;  height:22rem;'>" + "<img class='card-img-top' style='width: 100px; height:100px;' src=" + "'/Imagenes/" + response.Objects[indice].Sku + ".jpg'" + "alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            }
+
+
+        });
+
+        var LlenarContenerdorProducto = function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:13107/Producto/GetAll/',
+                dataType: 'json',
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    $.each(response.Objects, function (indice) {
+                        console.log(response.Objects[indice].NombreProducto);
+                        /*$('#contenedorProducto').append("<div class='card col-lg-1' style='width: 18rem;'>" + "<img class='card-img-top' src=" + +"alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");*/
+                        $('#contenedorProducto').append("<div class='card col-lg-1' style='width: 18rem; height:22rem;  '>" + "<img class='card-img-top' style='width: 100px; height:100px;' src=" + "'/Imagenes/" + response.Objects[indice].Sku + ".jpg'" + "alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
+
+        LlenarContenerdorProducto();
+
+        /////////////////////////////
+    })
+</script>

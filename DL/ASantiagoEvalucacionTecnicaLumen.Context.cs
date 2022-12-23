@@ -63,5 +63,10 @@ namespace DL
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PromocionGetAllActiva_Result>("PromocionGetAllActiva");
         }
+    
+        public virtual ObjectResult<MarcaGetAll_Result> MarcaGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MarcaGetAll_Result>("MarcaGetAll");
+        }
     }
 }

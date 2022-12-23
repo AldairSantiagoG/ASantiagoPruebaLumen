@@ -172,5 +172,52 @@ namespace BL
 
             return result;
         }
+        public static ML.Result ProductoGetPrimeraMarca()
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL.ASantiagoEvalucacionTecnicaLumenEntities context = new DL.ASantiagoEvalucacionTecnicaLumenEntities())
+                {
+                    var get = context.ProductoGetAllMostrar().ToList();
+                    
+                    result.Objects = new List<object>();
+                    int contador=0;
+                    if (get != null)
+                    {
+
+                        foreach (var obj in get)
+                        {
+                            ML.Producto producto = new ML.Producto();
+                            producto.Sku = obj.Sku;
+                            producto.NombreProducto = obj.NombreProducto;
+                            producto.Precio = obj.Precio.Value;
+                            producto.Marca = new ML.Marca();
+                            producto.Marca.IdMarca = obj.IdMarca;
+                            producto.Marca.NombreMarca = obj.NombreMarca;
+                            producto.ProductoMostrarEnElHome = obj.ProductoMostrarEnElHome.Value;
+                            if (contador < 2)
+                            {
+                                result.Objects.Add(producto);
+                            }
+                            contador++;
+                        }
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class Promocion
+    public class Marca
     {
-        public static ML.Result PromocionGetAllActiva()
+        public static ML.Result MarcaGetAll()
         {
             ML.Result result = new ML.Result();
 
@@ -16,19 +16,18 @@ namespace BL
             {
                 using (DL.ASantiagoEvalucacionTecnicaLumenEntities context = new DL.ASantiagoEvalucacionTecnicaLumenEntities())
                 {
-                    var get = context.PromocionGetAllActiva().ToList();
+                    var get = context.MarcaGetAll().ToList();
                     result.Objects = new List<object>();
                     if (get != null)
                     {
                         foreach (var obj in get)
                         {
-                            ML.Promocion promocion = new ML.Promocion();
-                            promocion.IdPromocion = obj.IdPromocion;
-                            promocion.NombrePromocion = obj.NombrePromocion;
-                            promocion.FechaInicio = obj.FechaInicio.Value;
-                            promocion.FechaTermino = obj.FechaTermino.Value;
-
-                            result.Objects.Add(promocion);
+                            ML.Marca marca = new ML.Marca();
+                            marca.IdMarca = obj.IdMarca;
+                            marca.NombreMarca = obj.NombreMarca;
+                            marca.MarcaMostrarEnElHome = obj.MarcaMostrarEnElHome.Value;
+                            
+                            result.Objects.Add(marca);
                         }
                         result.Correct = true;
                     }

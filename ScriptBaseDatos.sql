@@ -58,6 +58,7 @@ AS
 FROM Producto 
 INNER JOIN Marca ON Producto.IdMarca = Marca.IdMarca
 WHERE ProductoMostrarEnElHome=1
+ORDER BY IdMarca
 GO
 
 
@@ -94,4 +95,10 @@ AS
 	FROM Promocion
 	WHERE FechaInicio< GETDATE() AND FechaTermino> GETDATE()
 	
+GO
+
+CREATE PROCEDURE MarcaGetAll
+AS
+	SELECT IdMarca,NombreMarca,MarcaMostrarEnElHome
+	FROM Marca
 GO

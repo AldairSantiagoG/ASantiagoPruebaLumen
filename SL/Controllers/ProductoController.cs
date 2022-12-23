@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Cors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -28,6 +29,7 @@ namespace SL.Controllers
         }
 
         [HttpGet]
+        [Route("Producto/GetAll")]
         public IHttpActionResult ProductoGetAll()
         {
             ML.Result result = BL.Producto.ProductoGetAll();
@@ -41,9 +43,10 @@ namespace SL.Controllers
             }
         }
         [HttpGet]
+        [Route("Producto/GetMarca/{id}")]
         public IHttpActionResult ProductoGetByMarca(int id)
         {
-            ML.Result result = BL.Producto.ProductoGetAll();
+            ML.Result result = BL.Producto.ProductoGetByMarca(id);
             if (result.Correct)
             {
                 return Ok(result);
@@ -54,9 +57,24 @@ namespace SL.Controllers
             }
         }
         [HttpGet]
+        [Route("Producto/GetNombre")]
         public IHttpActionResult ProductoGetByNombre(string nombreProducto)
         {
             ML.Result result = BL.Producto.ProductoGetByNombre(nombreProducto);
+            if (result.Correct)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpGet]
+        [Route("Producto/GetPrimeraMarca")]
+        public IHttpActionResult ProductoGetPrimeraMarca()
+        {
+            ML.Result result = BL.Producto.ProductoGetPrimeraMarca();
             if (result.Correct)
             {
                 return Ok(result);

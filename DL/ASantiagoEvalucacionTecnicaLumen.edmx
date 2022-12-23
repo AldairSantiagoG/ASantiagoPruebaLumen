@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ASantiagoEvalucacionTecnicaLumenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ASantiagoEvalucacionTecnicaLumenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Marca">
           <Key>
             <PropertyRef Name="IdMarca" />
@@ -44,6 +44,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="MarcaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ProductoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ProductoGetAllMostrar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ProductoGetByMarca" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -62,8 +63,7 @@
             <End Role="Producto" EntitySet="Producto" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ASantiagoEvalucacionTecnicaLumenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -119,12 +119,13 @@
           <FunctionImport Name="ProductoGetAll" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetAll_Result)" />
           <FunctionImport Name="ProductoGetAllMostrar" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetAllMostrar_Result)" />
           <FunctionImport Name="ProductoGetByMarca" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetByMarca_Result)">
-            <Parameter Name="IdMarca" Mode="In" Type="Int32" />
+          <Parameter Name="IdMarca" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="ProductoGetByNombre" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.ProductoGetByNombre_Result)">
-            <Parameter Name="NombreProducto" Mode="In" Type="String" />
+          <Parameter Name="NombreProducto" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PromocionGetAllActiva" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.PromocionGetAllActiva_Result)" />
+          <FunctionImport Name="MarcaGetAll" ReturnType="Collection(ASantiagoEvalucacionTecnicaLumenModel.MarcaGetAll_Result)" />
         </EntityContainer>
         <ComplexType Name="ProductoGetAll_Result">
           <Property Type="Int32" Name="Sku" Nullable="false" />
@@ -163,6 +164,11 @@
           <Property Type="String" Name="NombrePromocion" Nullable="true" MaxLength="150" />
           <Property Type="DateTime" Name="FechaInicio" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="FechaTermino" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="MarcaGetAll_Result">
+          <Property Type="Int32" Name="IdMarca" Nullable="false" />
+          <Property Type="String" Name="NombreMarca" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="MarcaMostrarEnElHome" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -255,6 +261,15 @@
                 <ScalarProperty Name="NombrePromocion" ColumnName="NombrePromocion" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="FechaTermino" ColumnName="FechaTermino" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MarcaGetAll" FunctionName="ASantiagoEvalucacionTecnicaLumenModel.Store.MarcaGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASantiagoEvalucacionTecnicaLumenModel.MarcaGetAll_Result">
+                <ScalarProperty Name="IdMarca" ColumnName="IdMarca" />
+                <ScalarProperty Name="NombreMarca" ColumnName="NombreMarca" />
+                <ScalarProperty Name="MarcaMostrarEnElHome" ColumnName="MarcaMostrarEnElHome" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

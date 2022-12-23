@@ -10,8 +10,9 @@ namespace SL
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-
+            
             // Web API routes
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -19,6 +20,7 @@ namespace SL
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
         }
     }
 }

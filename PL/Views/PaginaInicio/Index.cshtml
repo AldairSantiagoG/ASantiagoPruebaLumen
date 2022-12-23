@@ -1,31 +1,116 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pagina 1";
 }
+<style>
+    body {
+        background-color: white;
+    }
 
-<h2>Index</h2>
+    .card {
+        border: outset;
+        background-color: #eee;
+        border-radius: 10px;
+        
+        margin-top: .5em;
+        margin-bottom: .5em;
+        margin-left: .5em;
+        margin-right: .5em;
+        
+    }
+</style>
+
+<br />
 <div class="container">
-    <div class="row col-lg-3" id="primerRow">
-        HolaRow1
+    <div class="row col-lg-3" id="promocionRow">
+        <h3>Promociones</h3>
+        @*HolaRow1
+            promociones*@
     </div>
-    <div class="row col-lg-6">
-        HolaRow2
+    <div class="row col-lg-7" id="primerRow">
+        <h3>Productos</h3>
+        @*HolaRow2
+        Productos
+        *@
     </div>
-    <div class="row col-lg-3">
-        HolaRow3
+    <div class="row col-lg-2" id="tercerRow">
+        <h3>Otros</h3>
+        @*HolaRow3*@
     </div>
     <div class="row"></div>
 </div>
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
+
     $(document).ready(function () {
+        ////////*********************************************************************
+
         var LlenarRow1 = function () {
-            $.get('http://localhost:13107/Producto/GetMostrar', {}, function (response) {
-                $.each(response.objects, function (indice) {
-                    $('#primerRow').append("<div class= 'card-deck col-lg-1' style='width: 150px;'>" + "<img class='card-img-top' src=" + + ">" + "<div class='card-body'>" + "<h5 class='card-title text-center'>" + "Otro" + "</h5>" + "</div></div>");
-                });
-            }           
-        };
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:13107/Producto/GetMostrar/',
+                dataType: 'json',
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    $.each(response.Objects, function (indice) {
+                        console.log(response.Objects[indice].NombreProducto);
+                        $('#primerRow').append("<div class='card col-lg-1' style='width: 18rem;  height:22rem;'>" + "<img class='card-img-top' style='width: 100px; height:100px;' src=" + "'/Imagenes/" + response.Objects[indice].Sku+".jpg'"+"alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");
+                    });
+
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
+        var LlenarRowPromociones = function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:13107/Promocion/PromocionActiva/',
+                dataType: 'json',
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    $.each(response.Objects, function (indice) {
+                        console.log(response.Objects[indice].NombreProducto);
+                        //$('#primerRow').append("<div class='card col-lg-1' style='width: 18rem;  height:22rem;'>" + "<img class='card-img-top' style='width: 100px; height:100px;' src=" + "'/Imagenes/" + response.Objects[indice].Sku + ".jpg'" + "alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "<p class='card-text'> <b>Marca: </b>" + response.Objects[indice].Marca.NombreMarca + "</p>" + "</div>" + "</div >");
+                        //$('#promocionRow').append("<div class='card ol-lg-1' style='width: 18rem;  height:22rem;'>" + "<img class='card-img-top' src=" + +"alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Promoción: </b>" + response.Objects[indice].NombrePromocion + "</h5>" + "<p class='card-text'> <b>Fecha inicio: </b>" + response.Objects[indice].FechaInicio + "</br><b>Fecha Fin: </b>" + response.Objects[indice].FechaTermino + "</p>" + "</div >");
+                        $('#promocionRow').append("<div class='card ol-lg-1' style='width: 18rem;  height:22rem;'>" + "<img class='card-img-top' style='width: 90px; height:70px;' src=" + "'/Imagenes/" + response.Objects[indice].IdPromocion + ".jpg'" + "alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Promoción: </b>" + response.Objects[indice].NombrePromocion + "</h5>" + "<p class='card-text'> <b>Fecha inicio: </b>" + response.Objects[indice].FechaInicio + "</br><b>Fecha Fin: </b>" + response.Objects[indice].FechaTermino + "</p>" + "</div >");
+                    
+                    });
+
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
+
+        var LlenarRow3 = function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:13107/Producto/GetPrimeraMarca/',
+                dataType: 'json',
+                data: {},
+                success: function (response) {
+                    console.log(response);
+                    $.each(response.Objects, function (indice) {
+                        console.log(response.Objects[indice].NombreProducto);
+                        /*$('#tercerRow').append("<div class='card col-lg-1' style='width: 18rem; '>" + "<img class='card-img-top' src=" + +"alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "</div>" + "</div >");*/
+                        $('#tercerRow').append("<div class='card col-lg-1' style='width: 18rem;  height:22rem; '>" + "<img class='card-img-top' style='width: 100px; height:100px;' src=" + "'/Imagenes/" + response.Objects[indice].Sku + ".jpg'" + "alt='Card image cap' >" + "<div class='card-body'>" + "<h5 class='card-title'> <b>Producto: </b>" + response.Objects[indice].NombreProducto + "</h5>" + "<p class='card-text'> <b>Precio: </b>" + response.Objects[indice].Precio + "</p>" + "</div>" + "</div >");
+                    });
+
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
         LlenarRow1();
+        LlenarRowPromociones();
+        LlenarRow3();
+
+        ///************************************************************************************
     });
 </script>
